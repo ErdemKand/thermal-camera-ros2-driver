@@ -136,6 +136,7 @@ v4l2-ctl --device=/dev/video0 --all
 # Capture a test frame
 v4l2-ctl --device=/dev/video0 --stream-mmap --stream-count=1 --stream-to=test.raw
 ```
+[referance](https://git.linuxtv.org/v4l-utils.git)
 #### FPS
 FPS stands for frames per second. In V4L2, it is controlled as follows:
 ```bash
@@ -148,4 +149,28 @@ v4l2-ctl --device=/dev/video0 --list-formats-ext
 ```
 [general_referance]( https://www.kernel.org/doc/html/latest/userspace-api/media/v4l/v4l2.html
 )
+### OpenCV-ROS2 Usage(cv_bridge)
+`cv_bridge` converts between OpenCV's `cv::Mat` format and ROS2's `sensor_msgs/Image` format.
 
+```
+OpenCV (cv::Mat / numpy array)
+        |
+      cv_bridge
+        |
+ROS2 (sensor_msgs/Image)
+```
+
+```python
+from cv_bridge import CvBridge
+import cv2
+bridge = CvBridge()
+# OpenCV → ROS2 message
+ros_image = bridge.cv2_to_imgmsg(cv_frame, encoding="bgr8")
+# ROS2 message → OpenCV
+cv_frame = bridge.imgmsg_to_cv2(ros_image, desired_encoding="bgr8")```
+
+```bash
+# Installation
+sudo apt install ros-humble-cv-bridge
+```
+[referance](https://github.com/ros-perception/vision_opencv/tree/rolling/cv_bridge)
