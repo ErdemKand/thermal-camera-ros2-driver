@@ -10,6 +10,7 @@ This project aims to develop a fully functional camera driver that integrates a 
 - Creating data recording and playback infrastructure with rosbag2.
 - Running the system and completing the integration on the Jetson Orin Nano.
 ## 2-Hardware and software requirements
+|---|---|
 | OS | Ubuntu 22.04LTS |
 | Target Platform | NVIDIA Jetson Orin Nano |
 | Thermal Camera | UTi721M |
