@@ -33,7 +33,8 @@ ROS2 (Robot Operating System 2) is an open-source middleware framework for robot
 | Parameter | Key-value pairs that enable the configuration of nodes at runtime |
 ### Publisher-Subscriber structure
 ROS2's fundamental communication pattern is the publish/subscribe pattern. This pattern allows nodes to operate independently; one node does not need to be aware of the existence of another.[documentation](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html)
-- Publisher->Topic->Subscriber
+ Publisher->Topic->Subscriber
 - Publisher: Publishes data of a specific message type to a topic.
 - Subscriber: Listens to the same topic and a callback function is triggered with each new message.
 - QoS (Quality of Service): Determines the reliability and latency of message delivery.
+<img width="1568" height="535" alt="image" src="https://github.com/user-attachments/assets/3bef5d3f-490b-4d39-bc0d-f690e0648445" />
