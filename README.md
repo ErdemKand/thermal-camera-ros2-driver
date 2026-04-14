@@ -97,5 +97,55 @@ ros2 bag info recording_folder/
 # Play back at increased speed (2x)
 ros2 bag play recording_folder/ --rate 2.0
 ```
+#### Usage in the project
+- Thermal image data recorded on the Jetson can be analyzed on the desktop
+- The same data can be tested repeatedly during driver development
+- Forest fire detection algorithms can be developed using bag files instead of live camera feeds
+[referance]( https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Recording-And-Playing-Back-Data/Recording-And-Playing-Back-Data.html)
 
+### Visualization with RViz2
+RViz2 is a 3D visualization tool for ROS2. It is used to visualize camera images, point clouds, robot models, and sensor data in real time.[referance](https://docs.ros.org/en/humble/Tutorials/Intermediate/RViz/RViz-User-Guide/RViz-User-Guide.html)
+#### Usage in the project
+- To visually verify that the camera driver is working correctly
+- Visualization of the thermal image using a colormap
+- Checking the images while Rosbag is playing.
+
+### V4L2 and USB Camera Recognition in Linux
+V4L2 (Video4Linux2) is the standard API used in the Linux kernel to manage video capture devices. USB cameras are introduced to the system via this API as device files in /dev/videoX.
+#### How to recognize a USB camera?
+1. **USB Camera (UVC Compatible)**
+2. **Linux Kernel** — `uvcvideo` driver loads automatically
+3. **Device file created** — `/dev/video0`, `/dev/video1`, ...
+4. **V4L2 API** — application layer reads the device file
+5. **OpenCV / ROS2 Driver** — captures frames via V4L2
+#### UVC(USB Video Class)Protocol
+UVC is a standard protocol for USB cameras. There's no need to write special drivers for UVC-compatible cameras; the Linux kernel's uvcvideo module is automatically enabled.
+
+#### Basic V4L2 Commands
+```bash
+# Install tools
+sudo apt install v4l-utils
+# List connected camera devices
+ls /dev/video*
+# Get detailed camera information
+v4l2-ctl --device=/dev/video0 --info
+# List supported formats
+v4l2-ctl --device=/dev/video0 --list-formats-ext
+# Display current settings
+v4l2-ctl --device=/dev/video0 --all
+# Capture a test frame
+v4l2-ctl --device=/dev/video0 --stream-mmap --stream-count=1 --stream-to=test.raw
+```
+#### FPS
+FPS stands for frames per second. In V4L2, it is controlled as follows:
+```bash
+# Display current FPS
+v4l2-ctl --device=/dev/video0 --get-parm
+# Set FPS
+v4l2-ctl --device=/dev/video0 --set-parm=30
+# List supported resolution and FPS combinations
+v4l2-ctl --device=/dev/video0 --list-formats-ext
+```
+[general_referance]( https://www.kernel.org/doc/html/latest/userspace-api/media/v4l/v4l2.html
+)
 
