@@ -1,5 +1,5 @@
 # thermal-camera-ros2-driver
-## 1-Project Objective
+## Project Objective
 This project aims to develop a fully functional camera driver that integrates a thermal camera with the ROS2 Humble ecosystem, broadcasting image data and capable of recording and visualizing this data. The developed driver will run on the Jetson Orin Nano and is planned to be integrated with unmanned aerial vehicle (UAV)-based forest fire detection systems in later stages.
 ### Things to do 
 - Recognizing and reading the thermal camera via the V4L2 interface in a Linux environment(ROS2_Humble).
@@ -9,7 +9,7 @@ This project aims to develop a fully functional camera driver that integrates a 
 - Providing real-time visualization with RViz2.
 - Creating data recording and playback infrastructure with rosbag2.
 - Running the system and completing the integration on the Jetson Orin Nano.
-## 2-Hardware and software requirements
+## Hardware and software requirements
 | Component | Details |
 |---|---|
 | OS | Ubuntu 22.04LTS |
