@@ -69,3 +69,14 @@ uint8[] data           actual matrix data, size is (step * rows)
 ### image_transport structure
 Raw image data (sensor_msgs/Image) consumes significant bandwidth when transported over a network. The image_transport package provides an abstraction layer for transporting this data using various compression methods.[documentation](https://docs.ros.org/en/ros2_packages/humble/api/image_transport/)
 
+```bash
+ros2 topic list | grep thermal
+```
+
+Output:
+```
+/thermal/image_raw           : raw, uncompressed data
+/thermal/image_raw/compressed  :JPEG/PNG compressed
+/thermal/image_raw/theora      : video stream
+```
+
