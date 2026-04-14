@@ -19,3 +19,15 @@ This project aims to develop a fully functional camera driver that integrates a 
 | Python | 3.10 |
 | ROS2 Packages | cv-bridge, image-transport, sensor-msgs |
 | System Tools | v4l-utils, python3-opencv |
+## Essential concepts for the project
+### ROS2-Humble
+ROS2 (Robot Operating System 2) is an open-source middleware framework for robotics software development. It is built on the DDS (Data Distribution Service) protocol, making it suitable for real-time systems, safety-critical applications, and multi-robot scenarios. [documentation](https://docs.ros.org/en/humble/)
+
+| Concept | Description |
+|---|---|
+| Node | An executable unit that performs a single function. E.g., camera reader node, image processor node|
+| Topic | The communication channel between nodes. It operates using a publish/subscribe model |
+| Package | In ROS2, it is the software distribution unit. It is compiled with colcon build |
+| Workspace | The directory structure where packages are compiled and managed (src/, build/, install/)|
+| Launch File | A configuration file that starts multiple nodes with a single command |
+| Parameter | Key-value pairs that enable the configuration of nodes at runtime |
