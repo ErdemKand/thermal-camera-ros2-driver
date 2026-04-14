@@ -43,7 +43,8 @@ ROS2's fundamental communication pattern is the publish/subscribe pattern. This 
 sensor_msgs/Image is the standard message type used to carry raw image data in ROS2.
 #### Structure of Message
 (terminal code : `ros2 interface show sensor_msgs/msg/Image`) and [document](https://docs.ros.org/en/humble/p/std_msgs/)
-```std_msgs/Header header  Header timestamp should be acquisition time of image
+```
+std_msgs/Header header  Header timestamp should be acquisition time of image
 	builtin_interfaces/Time stamp
 		int32 sec
 		uint32 nanosec
