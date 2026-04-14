@@ -79,4 +79,23 @@ Output:
 /thermal/image_raw/compressed  :JPEG/PNG compressed
 /thermal/image_raw/theora      : video stream
 ```
+### Record Data with Rosbag
+rosbag2 is a tool used in ROS2 to record and replay topic data. It is critical for testing and collecting experimental data without real hardware.[documentation](https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Recording-And-Playing-Back-Data/Recording-And-Playing-Back-Data.html)
+```bash
+# Record all topics
+ros2 bag record -a
+
+# Record a specific topic
+ros2 bag record /thermal/image_raw
+
+# Play back a recording
+ros2 bag play recording_folder/
+
+# Inspect recording contents
+ros2 bag info recording_folder/
+
+# Play back at increased speed (2x)
+ros2 bag play recording_folder/ --rate 2.0
+```
+
 
