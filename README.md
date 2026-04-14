@@ -40,10 +40,10 @@ ROS2's fundamental communication pattern is the publish/subscribe pattern. This 
 <img width="1568" height="535" alt="image" src="https://github.com/user-attachments/assets/3bef5d3f-490b-4d39-bc0d-f690e0648445" />
 
 ### sensor_msgs/Image
-`sensor_msgs/Image` is the standard message type used to carry raw image data in ROS2.
+sensor_msgs/Image is the standard message type used to carry raw image data in ROS2.
 #### Structure of Message
-(terminal code : ros2 interface show sensor_msgs/msg/Image) and [document](https://docs.ros.org/en/humble/p/std_msgs/)
-std_msgs/Header header  Header timestamp should be acquisition time of image
+(terminal code : 'ros2 interface show sensor_msgs/msg/Image') and [document](https://docs.ros.org/en/humble/p/std_msgs/)
+'std_msgs/Header header  Header timestamp should be acquisition time of image
 	builtin_interfaces/Time stamp
 		int32 sec
 		uint32 nanosec
@@ -63,4 +63,4 @@ string encoding        Encoding of pixels -- channel meaning, ordering, size
                        taken from the list of strings in include/sensor_msgs/image_encodings.hpp
 uint8 is_bigendian     is this data bigendian?
 uint32 step            Full row length in bytes
-uint8[] data           actual matrix data, size is (step * rows)
+uint8[] data           actual matrix data, size is (step * rows)'
