@@ -66,3 +66,6 @@ uint8 is_bigendian     is this data bigendian?
 uint32 step            Full row length in bytes
 uint8[] data           actual matrix data, size is (step * rows)
 ```
+### image_transport structure
+Raw image data (sensor_msgs/Image) consumes significant bandwidth when transported over a network. The image_transport package provides an abstraction layer for transporting this data using various compression methods.[documentation](https://docs.ros.org/en/ros2_packages/humble/api/image_transport/)
+
