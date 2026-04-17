@@ -174,3 +174,12 @@ cv_frame = bridge.imgmsg_to_cv2(ros_image, desired_encoding="bgr8")```
 sudo apt install ros-humble-cv-bridge
 ```
 [referance](https://github.com/ros-perception/vision_opencv/tree/rolling/cv_bridge)
+
+## Fake Thermal Publisher
+The ROS2 package skeleton was reviewed and improvements were initiated. First, the package contents were listed using the `ls /ros2_ws/src/thermal-camera-ros2-driver/src/thermal_camera_driver/` command, which revealed that only the __init__.py file was present. Since a fake_thermal_publisher node was needed, a new file named `fake_thermal_publisher.py` was created. This node publishes fake thermal images over the `/thermal/image_raw` topic at 30 FPS using the `sensor_msgs/Image` message type. The image resolution was set to 256×192 pixels to match the UTi721M thermal camera. Each frame is generated in mono8 encoding with random pixel values ranging from 50 to 200, simulating warm and cold regions in the scene.
+Next, the `fake_thermal_publisher entry` point was added to the entry_points section of `setup.py`, and the package was then compiled using colcon build:
+```
+cd ~/ros2_ws
+colcon build --packages-select thermal_camera_driver
+source install/setup.bash
+```
