@@ -189,3 +189,18 @@ The output was as follows, confirming that frame publishing worked without any i
 <img width="919" height="561" alt="Screenshot from 2026-04-17 17-05-46" src="https://github.com/user-attachments/assets/2d11c131-79f8-43f7-a6f8-4f8134a2ed41" />
 To visualize the incoming data, RViz2 was launched in a separate terminal. In the RViz2 window, the Add -> By topic -> /thermal/image_raw -> Image steps were followed to open the image panel, and the frames from the fake node were successfully rendered on screen.
 <img width="1220" height="901" alt="rviz" src="https://github.com/user-attachments/assets/f6165d9a-6eba-4493-86e7-36e7ad1a3ac1" />
+
+## OpenCV – ROS2 Integration
+Since OpenCV and ROS2 store image data in different formats, a converter is needed between them:
+OpenCV -> numpy array — stores pixel data as a 2D/3D array
+ROS2 -> sensor_msgs/Image — stores image data as a flat byte array with metadata
+The data flow for the thermal camera driver is as follows:
+1. Thermal Camera (USB)
+2. Read frame with OpenCV    (numpy array)
+3. Convert with cv_bridge   (sensor_msgs/Image)
+4. Publish over ROS2 topic   (/thermal/image_raw)
+To test this pipeline, a sample image was downloaded from the OpenCV GitHub repository:
+`wget https://raw.githubusercontent.com/opencv/opencv/master/samples/data/butterfly.jpg -O ~/test_image.jpg`
+A new node named `image_publisher.py` was then created to handle the OpenCV–cv_bridge integration. The `image_publisher` entry point was added to `setup.py` and the package was compiled using colcon build. An incorrect file path was initially provided, which caused a loading error. After correcting the path, the image was successfully published.
+To visualize the output, RViz2 was launched in a separate terminal. By following Add -> By topic -> /camera/image_raw -> Image, the image was successfully rendered on screen. All changes were then pushed to GitHub.
+<img width="952" height="901" alt="cv_bridge" src="https://github.com/user-attachments/assets/faecec08-a9bf-4c2f-b1a0-2372c8ea4e55" />
