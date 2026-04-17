@@ -183,3 +183,9 @@ cd ~/ros2_ws
 colcon build --packages-select thermal_camera_driver
 source install/setup.bash
 ```
+To verify that frames were being published at 30 FPS, the following command was run:
+`ros2 run thermal_camera_driver fake_thermal_publisher`
+The output was as follows, confirming that frame publishing worked without any issues:
+<img width="919" height="561" alt="Screenshot from 2026-04-17 17-05-46" src="https://github.com/user-attachments/assets/2d11c131-79f8-43f7-a6f8-4f8134a2ed41" />
+To visualize the incoming data, RViz2 was launched in a separate terminal. In the RViz2 window, the Add -> By topic -> /thermal/image_raw -> Image steps were followed to open the image panel, and the frames from the fake node were successfully rendered on screen.
+<img width="1220" height="901" alt="rviz" src="https://github.com/user-attachments/assets/f6165d9a-6eba-4493-86e7-36e7ad1a3ac1" />
