@@ -24,7 +24,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'fake_thermal_publisher = thermal_camera_driver.fake_thermal_publisher:main',
-	],
+		
+        ],
     },
 )
