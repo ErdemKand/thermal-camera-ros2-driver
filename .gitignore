@@ -5,3 +5,6 @@ install/
 log/
 *.pyc
 __pycache__/
+bags/
+*.db3
+*.yaml.bak
