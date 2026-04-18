@@ -205,3 +205,15 @@ A new node named `image_publisher.py` was then created to handle the OpenCV–cv
 To visualize the output, RViz2 was launched in a separate terminal. By following Add -> By topic -> /camera/image_raw -> Image, the image was successfully rendered on screen. All changes were then pushed to GitHub.
 <img width="952" height="901" alt="cv_bridge" src="https://github.com/user-attachments/assets/faecec08-a9bf-4c2f-b1a0-2372c8ea4e55" />
 [referance](https://github.com/opencv/opencv)
+
+## YAML-Based Configuration Setup
+
+| Parameter | Description |
+|---|---|
+|frame_width|Horizontal resolution of the camera frame in pixels|
+|frame_height|Vertical resolution of the camera frame in pixels|
+|fps|Number of frames captured and published per second|
+|topic_name|ROS2 topic name on which image data is published|
+|frame_id|Coordinate frame identifier used in the image header|
+|temp_min_threshold|Minimum temperature threshold for future fire detection logic|
+|temp_max_threshold|Maximum temperature threshold for future fire detection logic|
