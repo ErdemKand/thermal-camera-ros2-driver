@@ -221,7 +221,16 @@ A YAML-based configuration file was created under the config/ directory. This al
 [referance](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Using-Parameters-In-A-Class-Python.html)
 <img width="867" height="713" alt="image" src="https://github.com/user-attachments/assets/ce6bf1fa-ae90-4719-83b2-4b6baf969861" />
 The fake_thermal_publisher node was then updated to read all parameters from this YAML file at startup, replacing previously hardcoded values. The package was rebuilt using colcon build and tested with the following command:
-```
-ros2 run thermal_camera_driver fake_thermal_publisher --ros-args --params-file ~/ros2_ws/src/thermal-camera-ros2-driver/config/camera_params.yaml```
+`ros2 run thermal_camera_driver fake_thermal_publisher --ros-args --params-file ~/ros2_ws/src/thermal-camera-ros2-driver/config/camera_params.yaml`
 <img width="876" height="767" alt="Screenshot from 2026-04-18 21-00-46" src="https://github.com/user-attachments/assets/6ad1a3bb-2c3a-4ea2-bc4c-6971d5b76743" />
 ## Rosbag Visulization with RViz2
+To test data recording, the fake_thermal_publisher node was launched and the /thermal/image_raw topic was recorded using rosbag2:
+<img width="786" height="533" alt="Screenshot from 2026-04-18 21-03-38" src="https://github.com/user-attachments/assets/db593038-28e7-436f-9e93-00fb31275f40" />
+After approximately 7 seconds, the recording was stopped. The bag file was then inspected using:
+`ros2 bag info ~/ros2_ws/bags/rosbag2_2026_04_18-21_02_12`
+<img width="876" height="808" alt="Screenshot from 2026-04-18 21-03-32" src="https://github.com/user-attachments/assets/2d80d1bc-f9ff-4abd-957b-64ac7e744d40" />
+The recorded bag was then played back using:
+`ros2 bag play ~/ros2_ws/bags/rosbag2_2026_04_18-21_02_12`
+The playback was visualized in RViz2 by following Add -> By topic -> /thermal/image_raw -> Image, and the frames were successfully rendered on screen.
+<img width="1920" height="1080" alt="Screenshot from 2026-04-18 21-04-43" src="https://github.com/user-attachments/assets/a38a64b1-43dd-4841-840f-6cf2705ce2c0" />
+To prevent large bag files from being pushed to the repository, the .gitignore file was updated to exclude bags/ and *.db3 files.
