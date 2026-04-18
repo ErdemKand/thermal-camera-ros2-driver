@@ -221,5 +221,6 @@ A YAML-based configuration file was created under the config/ directory. This al
 [referance](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Using-Parameters-In-A-Class-Python.html)
 <img width="867" height="713" alt="image" src="https://github.com/user-attachments/assets/ce6bf1fa-ae90-4719-83b2-4b6baf969861" />
 The fake_thermal_publisher node was then updated to read all parameters from this YAML file at startup, replacing previously hardcoded values. The package was rebuilt using colcon build and tested with the following command:
-`ros2 run thermal_camera_driver fake_thermal_publisher --ros-args --params-file ~/ros2_ws/src/thermal-camera-ros2-driver/config/camera_params.yaml`
+```
+ros2 run thermal_camera_driver fake_thermal_publisher --ros-args --params-file ~/ros2_ws/src/thermal-camera-ros2-driver/config/camera_params.yaml```
 <img width="876" height="767" alt="Screenshot from 2026-04-18 21-00-46" src="https://github.com/user-attachments/assets/6ad1a3bb-2c3a-4ea2-bc4c-6971d5b76743" />
