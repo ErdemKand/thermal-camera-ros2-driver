@@ -1,0 +1,21 @@
+fake_thermal_publisher:
+  ros__parameters:
+    # Image dimensions (UTi721M thermal camera resolution)
+    frame_width: 256
+    frame_height: 192
+
+    # Frames per second
+    fps: 30.0
+
+    # ROS2 topic name
+    topic_name: /thermal/image_raw
+
+    # Coordinate frame ID
+    frame_id: thermal_camera
+
+    # Pixel encoding format
+    encoding: mono8
+
+    # Temperature thresholds (to be used in future stages)
+    temp_min_threshold: 50.0
+    temp_max_threshold: 200.0
