@@ -33,7 +33,8 @@ This project uses ROS2 Humble as the middleware layer. ROS2 handles communicatio
 | Parameter | Key-value pairs that enable the configuration of nodes at runtime |
 ### Publisher-Subscriber structure
 The driver uses ROS2's publish/subscribe pattern for data streaming. The thermal_camera_driver_node acts as a publisher, continuously capturing frames from the UTi721M and publishing them to /thermal/image_raw and /thermal/temperature_map topics. Any downstream node — such as a fire detection node — can subscribe to these topics without any direct dependency on the driver.[documentation](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html)
-thermal_camera_driver_node -> /thermal/image_raw -> fire_detector_node
+
+ thermal_camera_driver_node -> /thermal/image_raw -> fire_detector_node
 QoS is set to SENSOR_DATA profile to prioritize low latency over guaranteed delivery, which is appropriate for real-time image streaming.
 <img width="1568" height="535" alt="image" src="https://github.com/user-attachments/assets/3bef5d3f-490b-4d39-bc0d-f690e0648445" />
 
