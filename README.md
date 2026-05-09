@@ -1,6 +1,6 @@
 # thermal-camera-ros2-driver
 ## Project Objective
-This project aims to develop a fully functional camera driver that integrates a thermal camera with the ROS2 Humble ecosystem, broadcasting image data and capable of recording and visualizing this data. The developed driver will run on the Jetson Orin Nano and is planned to be integrated with unmanned aerial vehicle (UAV)-based forest fire detection systems in later stages.
+This project develops a ROS2 Humble driver for the UNI-T UTi721M USB-C thermal camera, targeting deployment on a Jetson Orin Nano. The driver publishes thermal image streams as ROS2 topics and supports rosbag recording for data collection. The system is designed as the sensing layer for a UAV-based forest fire detection pipeline.
 ### Things to do 
 - Recognizing and reading the thermal camera via the V4L2 interface in a Linux environment(ROS2_Humble).
 - Publishing image data in sensor_msgs/Image format via the /thermal/image_raw topic.
@@ -9,7 +9,7 @@ This project aims to develop a fully functional camera driver that integrates a 
 - Providing real-time visualization with RViz2.
 - Creating data recording and playback infrastructure with rosbag2.
 - Running the system and completing the integration on the Jetson Orin Nano.
-## Hardware and software requirements
+## Hardware and software
 | Component | Details |
 |---|---|
 | OS | Ubuntu 22.04LTS |
@@ -21,7 +21,7 @@ This project aims to develop a fully functional camera driver that integrates a 
 | System Tools | v4l-utils, python3-opencv |
 ## Essential concepts for the project
 ### ROS2-Humble
-ROS2 (Robot Operating System 2) is an open-source middleware framework for robotics software development. It is built on the DDS (Data Distribution Service) protocol, making it suitable for real-time systems, safety-critical applications, and multi-robot scenarios. [documentation](https://docs.ros.org/en/humble/)
+This project uses ROS2 Humble as the middleware layer. ROS2 handles communication between the camera driver node and other system components through its topic-based publish/subscribe architecture. Compared to ROS1, ROS2's DDS-based communication made it a practical choice for this project's deployment on Jetson Orin Nano. [documentation](https://docs.ros.org/en/humble/)
 
 | Concept | Description |
 |---|---|
@@ -32,15 +32,13 @@ ROS2 (Robot Operating System 2) is an open-source middleware framework for robot
 | Launch File | A configuration file that starts multiple nodes with a single command |
 | Parameter | Key-value pairs that enable the configuration of nodes at runtime |
 ### Publisher-Subscriber structure
-ROS2's fundamental communication pattern is the publish/subscribe pattern. This pattern allows nodes to operate independently; one node does not need to be aware of the existence of another.[documentation](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html)
- Publisher->Topic->Subscriber
-- Publisher: Publishes data of a specific message type to a topic.
-- Subscriber: Listens to the same topic and a callback function is triggered with each new message.
-- QoS (Quality of Service): Determines the reliability and latency of message delivery.
+The driver uses ROS2's publish/subscribe pattern for data streaming. The thermal_camera_driver_node acts as a publisher, continuously capturing frames from the UTi721M and publishing them to /thermal/image_raw and /thermal/temperature_map topics. Any downstream node — such as a fire detection node — can subscribe to these topics without any direct dependency on the driver.[documentation](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html)
+thermal_camera_driver_node -> /thermal/image_raw -> fire_detector_node
+QoS is set to SENSOR_DATA profile to prioritize low latency over guaranteed delivery, which is appropriate for real-time image streaming.
 <img width="1568" height="535" alt="image" src="https://github.com/user-attachments/assets/3bef5d3f-490b-4d39-bc0d-f690e0648445" />
 
 ### sensor_msgs/Image
-sensor_msgs/Image is the standard message type used to carry raw image data in ROS2.
+The driver publishes thermal frames using the sensor_msgs/Image message type. Each message carries a single frame captured from the UTi721M, encoded as bgr8, along with a timestamp and frame_id set to thermal_camera.
 #### Structure of Message
 (terminal code : `ros2 interface show sensor_msgs/msg/Image`) and [document](https://docs.ros.org/en/humble/p/std_msgs/)
 ```
@@ -80,7 +78,7 @@ Output:
 /thermal/image_raw/theora      : video stream
 ```
 ### Record Data with Rosbag
-rosbag2 is a tool used in ROS2 to record and replay topic data. It is critical for testing and collecting experimental data without real hardware.[documentation](https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Recording-And-Playing-Back-Data/Recording-And-Playing-Back-Data.html)
+During development, rosbag2 was used to record thermal data on both the laptop and Jetson Orin Nano. Recorded bags were used for calibration tests and to verify timestamp synchronization between /thermal/image_raw and /thermal/temperature_map topics.[documentation](https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Recording-And-Playing-Back-Data/Recording-And-Playing-Back-Data.html)
 ```bash
 # Record all topics
 ros2 bag record -a
@@ -104,23 +102,23 @@ ros2 bag play recording_folder/ --rate 2.0
 [referance]( https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Recording-And-Playing-Back-Data/Recording-And-Playing-Back-Data.html)
 
 ### Visualization with RViz2
-RViz2 is a 3D visualization tool for ROS2. It is used to visualize camera images, point clouds, robot models, and sensor data in real time.[referance](https://docs.ros.org/en/humble/Tutorials/Intermediate/RViz/RViz-User-Guide/RViz-User-Guide.html)
+RViz2 was used during development to visually verify that the driver was publishing correctly. The /thermal/image_raw topic was monitored in real time to confirm frame rate, encoding, and color output from the UTi721M.[referance](https://docs.ros.org/en/humble/Tutorials/Intermediate/RViz/RViz-User-Guide/RViz-User-Guide.html)
 #### Usage in the project
 - To visually verify that the camera driver is working correctly
 - Visualization of the thermal image using a colormap
 - Checking the images while Rosbag is playing.
 
 ### V4L2 and USB Camera Recognition in Linux
-V4L2 (Video4Linux2) is the standard API used in the Linux kernel to manage video capture devices. USB cameras are introduced to the system via this API as device files in /dev/videoX.
+The UTi721M connects over USB-C and was tested for V4L2 compatibility on both the laptop and Jetson Orin Nano. Unlike standard UVC cameras, the UTi721M does not expose a standard /dev/videoX device, which required an alternative approach using OpenCV's direct capture instead of V4L2.
 #### How to recognize a USB camera?
-1. **USB Camera (UVC Compatible)**
-2. **Linux Kernel** — `uvcvideo` driver loads automatically
-3. **Device file created** — `/dev/video0`, `/dev/video1`, ...
-4. **V4L2 API** — application layer reads the device file
-5. **OpenCV / ROS2 Driver** — captures frames via V4L2
+1. **UTi721M connected via USB-C**
+2. **lsusb confirmed device recognition** 
+3. **/dev/video0 checked via ls /dev/video*** 
+4. **V4L2 compatibility tested with v4l2-ctl --list-devices** 
+5. **OpenCV VideoCapture(0) used as fallback when V4L2 format was unsupported** 
 #### UVC(USB Video Class)Protocol
-UVC is a standard protocol for USB cameras. There's no need to write special drivers for UVC-compatible cameras; the Linux kernel's uvcvideo module is automatically enabled.
-
+The UTi721M was initially expected to be UVC-compatible, which would have allowed automatic recognition via the Linux kernel's uvcvideo module. However, testing showed that the camera uses a proprietary Android-oriented protocol, meaning standard UVC drivers did not apply.
+The following commands were used during compatibility testing on the laptop before Jetson deployment:
 #### Basic V4L2 Commands
 ```bash
 # Install tools
@@ -150,23 +148,15 @@ v4l2-ctl --device=/dev/video0 --list-formats-ext
 [general_referance]( https://www.kernel.org/doc/html/latest/userspace-api/media/v4l/v4l2.html
 )
 ### OpenCV-ROS2 Usage(cv_bridge)
-`cv_bridge` converts between OpenCV's `cv::Mat` format and ROS2's `sensor_msgs/Image` format.
-
-```
-OpenCV (cv::Mat / numpy array)
-        |
-      cv_bridge
-        |
-ROS2 (sensor_msgs/Image)
-```
-
+The driver uses cv_bridge to convert frames captured from the UTi721M via OpenCV into sensor_msgs/Image messages. Since the UTi721M outputs pseudocolor BGR frames, bgr8 encoding was used in the conversion.
+Core conversion used in thermal_camera_driver_node.py:
 ```python
 from cv_bridge import CvBridge
 import cv2
 bridge = CvBridge()
-# OpenCV → ROS2 message
+# OpenCV -> ROS2 message
 ros_image = bridge.cv2_to_imgmsg(cv_frame, encoding="bgr8")
-# ROS2 message → OpenCV
+# ROS2 message -> OpenCV
 cv_frame = bridge.imgmsg_to_cv2(ros_image, desired_encoding="bgr8")```
 
 ```bash
