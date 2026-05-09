@@ -19,9 +19,9 @@ This project develops a ROS2 Humble driver for the UNI-T UTi721M USB-C thermal c
 | Python | 3.10 |
 | ROS2 Packages | cv-bridge, image-transport, sensor-msgs |
 | System Tools | v4l-utils, python3-opencv |
-## Essential concepts for the project
+## Development Notes
 ### ROS2-Humble
-This project uses ROS2 Humble as the middleware layer. ROS2 handles communication between the camera driver node and other system components through its topic-based publish/subscribe architecture. Compared to ROS1, ROS2's DDS-based communication made it a practical choice for this project's deployment on Jetson Orin Nano. [documentation](https://docs.ros.org/en/humble/)
+This project uses ROS2 Humble as the middleware layer. ROS2 handles communication between the camera driver node and other system components through its topic-based publish/subscribe architecture.  [documentation](https://docs.ros.org/en/humble/)
 
 | Concept | Description |
 |---|---|
@@ -35,6 +35,7 @@ This project uses ROS2 Humble as the middleware layer. ROS2 handles communicatio
 The driver uses ROS2's publish/subscribe pattern for data streaming. The thermal_camera_driver_node acts as a publisher, continuously capturing frames from the UTi721M and publishing them to /thermal/image_raw and /thermal/temperature_map topics. Any downstream node — such as a fire detection node — can subscribe to these topics without any direct dependency on the driver.[documentation](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html)
 
  thermal_camera_driver_node -> /thermal/image_raw -> fire_detector_node
+ 
 QoS is set to SENSOR_DATA profile to prioritize low latency over guaranteed delivery, which is appropriate for real-time image streaming.
 <img width="1568" height="535" alt="image" src="https://github.com/user-attachments/assets/3bef5d3f-490b-4d39-bc0d-f690e0648445" />
 
