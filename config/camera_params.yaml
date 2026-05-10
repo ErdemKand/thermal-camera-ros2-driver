@@ -3,19 +3,33 @@ fake_thermal_publisher:
     # Image dimensions (UTi721M thermal camera resolution)
     frame_width: 256
     frame_height: 192
-
-    # Frames per second
-    fps: 30.0
-
+    # Frames per second (UTi721M max: 25Hz)
+    fps: 25.0
     # ROS2 topic name
     topic_name: /thermal/image_raw
-
     # Coordinate frame ID
     frame_id: thermal_camera
-
     # Pixel encoding format
     encoding: mono8
+    # Temperature range (UTi721M spec: -20°C to 550°C)
+    temp_min_threshold: -20.0
+    temp_max_threshold: 550.0
+    # Field of view (UTi721M spec)
+    fov_horizontal: 56.0
+    fov_vertical: 42.2
 
-    # Temperature thresholds (to be used in future stages)
-    temp_min_threshold: 50.0
-    temp_max_threshold: 200.0
+thermal_camera_driver_node:
+  ros__parameters:
+    # Calibration parameters (measured on 2026-05-10)
+    # Method: reference thermometer vs UTi721M readings
+    temp_scale: 1.0
+    temp_offset: 0.0
+    high_temp_correction: 6.0
+    calibration_date: "2026-05-10"
+    calibration_points:
+      point1_reference: 1.7
+      point1_camera: 1.7
+      point2_reference: 27.0
+      point2_camera: 27.0
+      point3_reference: 78.0
+      point3_camera: 72.0
