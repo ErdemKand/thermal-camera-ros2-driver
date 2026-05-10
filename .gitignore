@@ -10,3 +10,4 @@ bags/
 *.yaml.bak
 videos/
 videos/
+*.save.*
