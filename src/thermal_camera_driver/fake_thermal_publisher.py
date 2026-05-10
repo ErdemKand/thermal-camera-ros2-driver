@@ -9,7 +9,7 @@ class FakeThermalPublisher(Node):
     def __init__(self):
         super().__init__('fake_thermal_publisher')
 
-        # Declare parameters with default values (can be overridden by YAML)
+        # Declare parameters with default values 
         self.declare_parameter('frame_width', 256)
         self.declare_parameter('frame_height', 192)
         self.declare_parameter('fps', 30.0)

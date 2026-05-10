@@ -26,6 +26,8 @@ setup(
         'console_scripts': [
             'fake_thermal_publisher = thermal_camera_driver.fake_thermal_publisher:main',
 	    'image_publisher = thermal_camera_driver.image_publisher:main',
+	    'video_publisher = thermal_camera_driver.video_publisher:main',
+	    'thermal_camera_driver_node = thermal_camera_driver.thermal_camera_driver_node:main',
 	],
     },
 )
