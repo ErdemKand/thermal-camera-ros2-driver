@@ -30,6 +30,9 @@ class TemperatureMapNode(Node):
 		self.subscription = self.create_subscription(Image, input_topic, self.image_callback, 10)
 		self.publisher = self.create_publisher(Image, output_topic, 10)
 	def image_callback(self, msg):
+# UTi721M outputs pseudocolor BGR frames
+# Grayscale intensity used as temperature proxy
+# Calibrated on 3 reference points (1.7, 27, 78°C)
 		frame = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
 		gray=cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 		temp_map =self.temp_min + (gray.astype(np.float32)/255.0)*(self.temp_max - self.temp_min)
