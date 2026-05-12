@@ -29,7 +29,7 @@ class TemperatureMapNode(Node):
 			bar[i, :] = color
 		labels = np.zeros((h, label_w, 3), dtype=np.uint8)
 		for i in range(6):
-			y = int(i * (h - 1) / 5)
+			y = int(10 +  i * (h-20)/5)
 			temp = t_max - i * (t_max - t_min) / 5
 			cv2.putText(labels, f'{temp:.1f}C', (2, y + 5), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (255, 255, 255), 1)
 		return np.hstack([frame, bar, labels])
@@ -43,6 +43,7 @@ class TemperatureMapNode(Node):
 		temp_uint8 = temp_normalized.astype(np.uint8)
 		temp_colormap = cv2.applyColorMap(temp_uint8, cv2.COLORMAP_JET)
 		temp_colormap = self.add_colorbar(temp_colormap, actual_min, actual_max)
+		temp_colormap = cv2.resize(temp_colormap, (512, 384))
 		out_msg = self.bridge.cv2_to_imgmsg(temp_map, encoding='32FC1')
 		out_msg.header = msg.header
 		self.publisher.publish(out_msg)
