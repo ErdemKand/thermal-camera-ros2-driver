@@ -171,21 +171,4 @@ thermal_camera_driver/
 
 ## System Architecture
 
-```
-UTi721M Camera (/dev/video0)
-        |
-        v  V4L2 / OpenCV (256x384 YUYV)
-thermal_camera_driver_node
-        |
-        |---> /thermal/image_raw        (grayscale, bgr8)
-        +---> /thermal/image_raw16      (raw 16-bit, mono16)
-                        |
-                        v
-            temperature_map_node
-                        |
-                        |---> /thermal/temperature_map        (C, 32FC1)
-                        +---> /thermal/temperature_map/visual (JET colormap, bgr8)
-```
-
----
-
+<img width="872" height="376" alt="Ekran görüntüsü 2026-05-22 095441" src="https://github.com/user-attachments/assets/10b9e922-7120-4e76-af0e-e5b5c13a036e" />
